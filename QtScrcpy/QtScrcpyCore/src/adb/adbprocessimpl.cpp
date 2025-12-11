@@ -153,10 +153,6 @@ void AdbProcessImpl::execute(const QString &serial, const QStringList &args)
         start(getAdbPath(), adbArgs);
     }
 #endif
-
-    if (!waitForStarted(3000)) {
-        emit transferLog("adb start timeout/fail");
-    }
 }
 
 bool AdbProcessImpl::isRuning()
