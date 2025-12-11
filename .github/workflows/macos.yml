@@ -18,7 +18,8 @@ jobs:
     # qt5+intel mac编译intel没问题
     # qt5+arm mac编译intel会报错
     # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
-    runs-on: macos-13
+    # macos-13已退役，更新为macos-14
+    runs-on: macos-14
     strategy:
       matrix:
         qt-ver: [5.15.2, 6.5.3]        
@@ -54,7 +55,7 @@ jobs:
           version: ${{ matrix.qt-ver }}
           modules: qtmultimedia
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: 'true'

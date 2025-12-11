@@ -39,8 +39,9 @@ jobs:
     # 使用表达式语法${{}}访问上下文 https://help.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
     env:
       target-name: QtScrcpy
-      vcvarsall-path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
-      vcinstall-path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\VC'
+      # 使用 Community 版本（GitHub Actions 默认安装的是 Community 版本）
+      vcvarsall-path: 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat'
+      vcinstall-path: 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC'
       qt-install-path: ${{ github.workspace }}/${{ matrix.qt-ver }}
       plantform-des: win
     # 步骤
@@ -64,7 +65,7 @@ jobs:
           arch: ${{ matrix.qt-arch }}
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
       # 拉取代码
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: 'true'
@@ -77,8 +78,12 @@ jobs:
           ENV_VCVARSALL: ${{ env.vcvarsall-path }}
           ENV_QT_PATH: ${{ env.qt-install-path }}
         run: |
-          call python ci\generate-version.py
-          call "ci\win\build_for_win.bat" RelWithDebInfo ${{ matrix.msvc-arch }}
+          python ci\generate-version.py
+          if errorlevel 1 (
+            echo "Version generation failed, using default version"
+            echo 0.0.0 > QtScrcpy\appversion
+          )
+          ci\win\build_for_win.bat RelWithDebInfo ${{ matrix.msvc-arch }}
       # 获取ref最后一个/后的内容
       - name: Get the version
         shell: bash
