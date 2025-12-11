@@ -57,7 +57,7 @@ jobs:
           version: ${{ matrix.qt-ver }}
           modules: qtmultimedia
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
           submodules: 'true'
