@@ -7,12 +7,14 @@ on:
       - '!QtScrcpy/res/**'
       - '.github/workflows/windows.yml'
       - 'ci/win**'
+      - 'ci/generate-version.py'
   pull_request:
     paths:
       - 'QtScrcpy/**'
       - '!QtScrcpy/res/**'
       - '.github/workflows/windows.yml'
       - 'ci/win**'
+      - 'ci/generate-version.py'
 jobs:
   build:
     name: Build

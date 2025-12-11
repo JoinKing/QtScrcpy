@@ -6,12 +6,14 @@ on:
       - '!QtScrcpy/res/**'
       - '.github/workflows/ubuntu.yml'
       - 'ci/linux/**'
+      - 'ci/generate-version.py'
   pull_request:
     paths:
       - 'QtScrcpy/**'
       - '!QtScrcpy/res/**'
       - '.github/workflows/ubuntu.yml'
       - 'ci/linux/**'
+      - 'ci/generate-version.py'
 jobs:
   build:
     name: Build
