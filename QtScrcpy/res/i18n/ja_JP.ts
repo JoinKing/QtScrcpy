@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS []>
 <TS version="2.1" language="ja_JP">
   <context>
@@ -41,26 +41,6 @@
     <message>
       <source>This software is completely open source and free. Use it at your own risk. You can download it at the following address:</source>
       <translation>このソフトウェアはオープンソースで完全無料です。自己責任でご利用ください。以下のアドレスからダウンロードできます:</translation>
-    </message>
-    <message>
-      <source>QuickMirror</source>
-      <translation>クイックミラー</translation>
-    </message>
-    <message>
-      <source>If you need more professional batch control mirror software, you can try the following software:</source>
-      <translation>より高度なバッチ制御が可能なミラーソフトウェアが必要な場合は、次のソフトウェアをお試しください:</translation>
-    </message>
-    <message>
-      <source>If you need more professional game keymap mirror software, you can try the following software:</source>
-      <translation>より高度なゲームキーマップが可能なミラーソフトウェアが必要な場合は、次のソフトウェアをお試しください:</translation>
-    </message>
-    <message>
-      <source>QuickAssistant</source>
-      <translation>クイックアシスタント</translation>
-    </message>
-    <message>
-      <source>You can contact me with telegram &lt;https://t.me/+Ylf_5V_rDCMyODQ1&gt;</source>
-      <translation>Telegram で連絡ができます &lt;https://t.me/+Ylf_5V_rDCMyODQ1&gt;</translation>
     </message>
   </context>
   <context>

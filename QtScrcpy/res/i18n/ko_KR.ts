@@ -42,26 +42,6 @@
         <source>This software is completely open source and free. Use it at your own risk. You can download it at the following address:</source>
         <translation>이 소프트웨어는 완전히 오픈 소스이며 무료입니다. 본인의 위험을 감수하고 사용하세요. 다음 주소로 다운로드할 수 있습니다:</translation>
     </message>
-    <message>
-        <source>QuickMirror</source>
-        <translation>빠른미러</translation>
-    </message>
-    <message>
-        <source>If you need more professional batch control mirror software, you can try the following software:</source>
-        <translation>더 전문적인 일괄 제어 미러 소프트웨어가 필요하다면 다음 소프트웨어를 사용해 볼 수 있습니다:</translation>
-    </message>
-    <message>
-        <source>If you need more professional game keymap mirror software, you can try the following software:</source>
-        <translation>더 전문적인 게임 키맵 미러 소프트웨어가 필요하다면 다음 소프트웨어를 사용해 보세요:</translation>
-    </message>
-    <message>
-        <source>QuickAssistant</source>
-        <translation>빠른 도우미</translation>
-    </message>
-    <message>
-        <source>You can contact me with telegram &lt;https://t.me/+Ylf_5V_rDCMyODQ1&gt;</source>
-        <translation>텔레그램으로 연락주세요 &lt;https://t.me/+Ylf_5V_rDCMyODQ1&gt;</translation>
-    </message>
 </context>
 <context>
     <name>ToolForm</name>

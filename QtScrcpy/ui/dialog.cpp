@@ -40,8 +40,10 @@ Dialog::Dialog(QWidget *parent) : QWidget(parent), ui(new Ui::Widget), m_fileTra
     // 初始化文件传输进度条
     ui->downloadProgressBar->setValue(0);
     ui->uploadProgressBar->setValue(0);
-    ui->downloadProgressBar->setTextVisible(true);
-    ui->uploadProgressBar->setTextVisible(true);
+    ui->downloadProgressBar->setTextVisible(false);
+    ui->uploadProgressBar->setTextVisible(false);
+    ui->downloadProgressBar->hide();
+    ui->uploadProgressBar->hide();
 
     updateBootConfig(true);
 
@@ -1003,16 +1005,16 @@ void Dialog::on_downloadBtn_clicked()
     // 连接信号监听传输开始
     connect(m_fileTransferAdb, &qsc::AdbProcess::adbProcessResult, this, [this](qsc::AdbProcess::ADB_EXEC_RESULT processResult) {
         if (processResult == qsc::AdbProcess::AER_SUCCESS_START) {
-            // 传输开始，显示明确进度
+            // 传输开始，显示不确定进度
             if (m_isCurrentTransferDownload) {
                 ui->downloadProgressBar->setMinimum(0);
-                ui->downloadProgressBar->setMaximum(100);
-                ui->downloadProgressBar->setFormat(tr("Downloading %p%"));
+                ui->downloadProgressBar->setMaximum(0);
+                ui->downloadProgressBar->setFormat(tr("Downloading..."));
                 ui->downloadProgressBar->setValue(0);
             } else {
                 ui->uploadProgressBar->setMinimum(0);
-                ui->uploadProgressBar->setMaximum(100);
-                ui->uploadProgressBar->setFormat(tr("Uploading %p%"));
+                ui->uploadProgressBar->setMaximum(0);
+                ui->uploadProgressBar->setFormat(tr("Uploading..."));
                 ui->uploadProgressBar->setValue(0);
             }
             return;
@@ -1027,12 +1029,12 @@ void Dialog::on_downloadBtn_clicked()
         }
     });
     
-    // 重置进度条并显示明确进度
+    // 重置进度条并显示不确定进度
     ui->downloadProgressBar->setMinimum(0);
-    ui->downloadProgressBar->setMaximum(100);
+    ui->downloadProgressBar->setMaximum(0);
     ui->downloadProgressBar->setValue(0);
-    ui->downloadProgressBar->setFormat("%p%");
-    ui->downloadProgressBar->setTextVisible(true);
+    ui->downloadProgressBar->setFormat(tr("Preparing..."));
+    ui->downloadProgressBar->setTextVisible(false);
     ui->downloadProgressBar->show();
     ui->downloadBtn->setEnabled(true);
     ui->downloadBtn->setText(tr("Stop"));
@@ -1145,16 +1147,18 @@ void Dialog::on_uploadBtn_clicked()
     // 连接信号监听传输开始和完成
     connect(m_fileTransferAdb, &qsc::AdbProcess::adbProcessResult, this, [this](qsc::AdbProcess::ADB_EXEC_RESULT processResult) {
         if (processResult == qsc::AdbProcess::AER_SUCCESS_START) {
-            // 传输开始，显示明确进度
+            // 传输开始，显示不确定进度
             if (m_isCurrentTransferDownload) {
                 ui->downloadProgressBar->setMinimum(0);
-                ui->downloadProgressBar->setMaximum(100);
-                ui->downloadProgressBar->setFormat(tr("Downloading %p%"));
+                ui->downloadProgressBar->setMaximum(0);
+                ui->downloadProgressBar->setFormat(tr("Downloading..."));
+                ui->downloadProgressBar->setTextVisible(false);
                 ui->downloadProgressBar->setValue(0);
             } else {
                 ui->uploadProgressBar->setMinimum(0);
-                ui->uploadProgressBar->setMaximum(100);
-                ui->uploadProgressBar->setFormat(tr("Uploading %p%"));
+                ui->uploadProgressBar->setMaximum(0);
+                ui->uploadProgressBar->setFormat(tr("Uploading..."));
+                ui->uploadProgressBar->setTextVisible(false);
                 ui->uploadProgressBar->setValue(0);
             }
             return;
@@ -1169,12 +1173,12 @@ void Dialog::on_uploadBtn_clicked()
         }
     });
     
-    // 重置进度条并显示明确进度
+    // 重置进度条并显示不确定进度
     ui->uploadProgressBar->setMinimum(0);
-    ui->uploadProgressBar->setMaximum(100);
+    ui->uploadProgressBar->setMaximum(0);
     ui->uploadProgressBar->setValue(0);
-    ui->uploadProgressBar->setFormat("%p%");
-    ui->uploadProgressBar->setTextVisible(true);
+    ui->uploadProgressBar->setFormat(tr("Preparing..."));
+    ui->uploadProgressBar->setTextVisible(false);
     ui->uploadProgressBar->show();
     ui->uploadBtn->setEnabled(false);
     
@@ -1186,30 +1190,17 @@ void Dialog::on_uploadBtn_clicked()
 
 void Dialog::onFileTransferProgress(bool isDownload, int progress)
 {
+    Q_UNUSED(progress);
+
+    // 仅显示不确定进度的 loading
     if (isDownload) {
-        if (progress < 0) {
-            // 不确定状态 - 显示动画
-            ui->downloadProgressBar->setMinimum(0);
-            ui->downloadProgressBar->setMaximum(0);
-            ui->downloadProgressBar->setValue(0);
-        } else {
-            ui->downloadProgressBar->setMinimum(0);
-            ui->downloadProgressBar->setMaximum(100);
-            ui->downloadProgressBar->setValue(progress);
-            ui->downloadProgressBar->setFormat("%p%");
-        }
+        ui->downloadProgressBar->setMinimum(0);
+        ui->downloadProgressBar->setMaximum(0);
+        ui->downloadProgressBar->setValue(0);
     } else {
-        if (progress < 0) {
-            // 不确定状态 - 显示动画
-            ui->uploadProgressBar->setMinimum(0);
-            ui->uploadProgressBar->setMaximum(0);
-            ui->uploadProgressBar->setValue(0);
-        } else {
-            ui->uploadProgressBar->setMinimum(0);
-            ui->uploadProgressBar->setMaximum(100);
-            ui->uploadProgressBar->setValue(progress);
-            ui->uploadProgressBar->setFormat("%p%");
-        }
+        ui->uploadProgressBar->setMinimum(0);
+        ui->uploadProgressBar->setMaximum(0);
+        ui->uploadProgressBar->setValue(0);
     }
 }
 
@@ -1239,7 +1230,9 @@ void Dialog::onFileTransferFinished(bool isDownload, bool success)
         // 重置进度条显示
         QTimer::singleShot(3000, [this]() {
             ui->downloadProgressBar->setValue(0);
-            ui->downloadProgressBar->setFormat("%p%");
+            ui->downloadProgressBar->setFormat(QString());
+            ui->downloadProgressBar->setTextVisible(false);
+            ui->downloadProgressBar->hide();
         });
         m_isDownloadCancelling = false;
     } else {
@@ -1257,14 +1250,18 @@ void Dialog::onFileTransferFinished(bool isDownload, bool success)
             // 重置进度条
             QTimer::singleShot(3000, [this]() {
                 ui->uploadProgressBar->setValue(0);
-                ui->uploadProgressBar->setFormat("%p%");
+                ui->uploadProgressBar->setFormat(QString());
+                ui->uploadProgressBar->setTextVisible(false);
+                ui->uploadProgressBar->hide();
             });
         } else {
             outLog(tr("File upload failed"), false);
             // 保持失败状态显示一段时间
             QTimer::singleShot(3000, [this]() {
                 ui->uploadProgressBar->setValue(0);
-                ui->uploadProgressBar->setFormat("%p%");
+                ui->uploadProgressBar->setFormat(QString());
+                ui->uploadProgressBar->setTextVisible(false);
+                ui->uploadProgressBar->hide();
             });
         }
     }
